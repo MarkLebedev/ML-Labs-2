@@ -85,4 +85,11 @@ class Numbers {
     val all_numbers: Array<Array<IntArray>> = arrayOf(
         zero, one, two, three, four, five, six, seven, eight, nine
     )
+
+    fun numberPrint(number: Array<IntArray>) {
+        println("___")
+        for (i in number) {
+            println(i.joinToString())
+        }
+    }
 }
