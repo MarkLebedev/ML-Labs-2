@@ -2,7 +2,6 @@ package knn1
 
 import knn1.distance.DistanceType
 import knn1.noise.NoiseType
-import sun.nio.cs.Surrogate
 
 fun main() {
 

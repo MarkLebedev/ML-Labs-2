@@ -6,7 +6,7 @@ import kotlin.random.Random
 class TrainGenerator {
 
     fun generate(size: Int, greyScale: Boolean, noiser: ParentNoiser, noiselevel: Int): MutableList<Pair<Int, Array<IntArray>>> {
-        var train = MutableList(size) { Pair<Int, Array<IntArray>>(0, arrayOf())}
+        val train = MutableList(size) { Pair<Int, Array<IntArray>>(0, arrayOf())}
 
         val scaler = GreyScaler()
         val numbers = Numbers()
