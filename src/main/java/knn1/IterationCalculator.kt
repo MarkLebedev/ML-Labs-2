@@ -6,31 +6,76 @@ import kotlin.random.Random
 
 class IterationCalculator {
 
-    fun calculate(iterations: Int, noiser: ParentNoiser, noiseLevel: Int, numbers: Array<Array<IntArray>>, distance: ParentDistanceCalculator): Array<IntArray> {
+    fun calculate(greyScale: Boolean, iterations: Int, noiser: ParentNoiser, noiseLevel: Int, numbers: Array<Array<IntArray>>,
+                  distance: ParentDistanceCalculator, train: MutableList<Pair<Int, Array<IntArray>>>, k: Int): Array<IntArray> {
         val results: Array<IntArray> = Array(iterations) { IntArray(2) }
         val copier = MatrixCopier()
+        val scaler = GreyScaler()
 
         for (i in 0..iterations-1) {
-            val trueIndex: Int = Random.nextInt(0, 10)
+            val trueIndex = Random.nextInt(numbers.size)
 
-            val noisedNumber = noiser.noise(copier.copy(numbers[trueIndex]), noiseLevel)
-
-            var minDistance = 9999999.0
-            var closestIndex = 0
-
-            for (index in numbers.indices) {
-                val dis = distance.distance(noisedNumber, numbers[index])
-                if (dis < minDistance) {
-                    minDistance = dis
-                    closestIndex = index
-                }
+            var number = copier.copy(numbers[trueIndex])
+            if (greyScale) {
+                number = scaler.BWToGreyscale(number)
             }
+            val noisedNumber = noiser.noise(number, noiseLevel)
 
-            results[i] = intArrayOf(trueIndex, closestIndex)
+            val kNeighbours = kNearestDistances(distance, noisedNumber, train, k)
+
+            val predictedIndex = findMostCommonNeighbour(kNeighbours)
+
+            results[i] = intArrayOf(trueIndex, predictedIndex)
 
         }
 
         return results
+    }
+
+    fun kNearestDistances(distanceCalculator: ParentDistanceCalculator, number: Array<IntArray>,
+                          train: MutableList<Pair<Int, Array<IntArray>>>, k: Int): Array<Pair<Int, Double>> {
+        val distances = Array<Pair<Int, Double>>(k) { Pair(0, 99999999.0) }
+
+        for (i in train) {
+            val distance = distanceCalculator.distance(number, i.second)
+
+            if (distance < distances[findMaxDistanceInK(distances)].second) {
+                distances[findMaxDistanceInK(distances)] = Pair(i.first, distance)
+            }
+        }
+
+        return distances
+    }
+
+    fun findMaxDistanceInK(distances: Array<Pair<Int, Double>>): Int {
+        var indexOfMaxDistance = -1
+        var maxDistance = 0.0
+
+        for (i in distances.indices) {
+            if (distances[i].second >= maxDistance) {
+                maxDistance = distances[i].second
+                indexOfMaxDistance = i
+            }
+        }
+
+        return indexOfMaxDistance
+    }
+
+    fun findMostCommonNeighbour(distances: Array<Pair<Int, Double>>): Int {
+        val neighbours = MutableList<Int>(10) {0}
+        for (i in distances) {
+            neighbours[i.first]++
+        }
+        var bestNeighbourIndex = 0
+        var bestNeighbourCount = 0
+        for (i in neighbours.indices) {
+            if (neighbours[i] > bestNeighbourCount) {
+                bestNeighbourIndex = i
+                bestNeighbourCount = neighbours[i]
+            }
+        }
+
+        return bestNeighbourIndex
     }
 
 }
