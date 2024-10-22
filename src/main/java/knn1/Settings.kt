@@ -22,7 +22,7 @@ class Settings(val greyScale: Boolean, val noiseLevel: Int, val iterations: Int,
         DistanceType.REGULAR -> RegularDistanceCalculator()
         DistanceType.CHEBYSHEV -> ChebyshevDistanceCalculator()
         DistanceType.EUCLIDIAN -> EuclidianDistanceCalculator()
-        DistanceType.EUCLIDIDAN_SQUARED -> EuclidianSquaredDistanceCalculator()
+        DistanceType.EUCLIDIAN_SQUARED -> EuclidianSquaredDistanceCalculator()
     }
 
 
