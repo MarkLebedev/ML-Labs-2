@@ -5,17 +5,17 @@ import knn1.noise.NoiseType
 
 fun main() {
 
-    val settings = Settings(false, 30, 100, DistanceType.EUCLIDIAN, NoiseType.EVEN)
+    val settings = Settings(true, 30, 1000, DistanceType.CHEBYSHEV, NoiseType.UNEVEN)
     val numbers = Numbers().all_numbers
 
     val generator = TrainGenerator()
 
-    val train = generator.generate(100, settings.greyScale, settings.noiser, noiselevel = settings.noiseLevel)
+    val train = generator.generate(100, settings.greyScale, settings.noiser, settings.noiseLevel)
 
     val iterationCalculator = IterationCalculator()
 
-    val results = iterationCalculator.calculate(settings.greyScale, settings.iterations, settings.noiser, settings.noiseLevel,
-        numbers, settings.distance, train, 5)
+    val results = iterationCalculator.calculate(settings.greyScale, settings.iterations, settings.noiser,
+        settings.noiseLevel, numbers, settings.distance, train, 5)
 
     var rights = 0.0
     var wrongs = 0.0
