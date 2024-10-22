@@ -4,7 +4,7 @@ enum class DistanceType {
 
     CHEBYSHEV,
     EUCLIDIAN,
-    EUCLIDIDAN_SQUARED,
+    EUCLIDIAN_SQUARED,
     REGULAR
 
 }

@@ -5,7 +5,7 @@ import knn1.noise.NoiseType
 
 fun main() {
 
-    val settings = Settings(true, 20, 1000, DistanceType.EUCLIDIDAN_SQUARED, NoiseType.EVEN)
+    val settings = Settings(false, 30, 100, DistanceType.EUCLIDIAN, NoiseType.EVEN)
     val numbers = Numbers().all_numbers
 
     val generator = TrainGenerator()
