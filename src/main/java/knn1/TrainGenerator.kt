@@ -11,7 +11,7 @@ class TrainGenerator {
         val scaler = GreyScaler()
         val numbers = Numbers()
 
-        println("Generating a train sequence with greyscale: $greyScale, noiser: ${noiser.javaClass}, size: $size")
+        //println("Generating a train sequence with greyscale: $greyScale, noiser: ${noiser.javaClass}, size: $size")
 
         for (i in 0 until size) {
             val index = Random.nextInt(numbers.all_numbers.size)
