@@ -16,7 +16,7 @@ class TrainGenerator {
     fun generate(function: Function, noise: NoiseType): MutableList<Pair<Double, Double>> {
         val train = mutableListOf<Pair<Double, Double>>()
 
-        for (i in 0..30) {
+        for (i in 0..20) {
             val x = Random.nextDouble(0.0, 2*Math.PI)
             val y = when(function) {
                 Function.COSX -> Math.cos(x)

@@ -88,7 +88,7 @@ class RegularizedSolver {
 
         val ATY = A.transpose().dot(Y)
 
-        val coefficients = invertMatrix(ATA.toArray()).toNDArray().dot(ATY)
+        val coefficients = invertMatrix(regularizedATA).toNDArray().dot(ATY)
 
         return coefficients.data.toList()
     }
@@ -134,7 +134,6 @@ class RegularizedSolver {
         val errors = mutableListOf<Double>()
 
         for (fold in 0 until k) {
-            // Split into training and validation sets
             val validationIndices = indices.subList(fold * foldSize, (fold + 1) * foldSize)
             val trainingIndices = indices - validationIndices.toSet()
 
@@ -143,15 +142,12 @@ class RegularizedSolver {
             val xValidation = validationIndices.map { x[it] }
             val yValidation = validationIndices.map { y[it] }
 
-            // Train model with regularization
             val coefficients = polynomialRegression(xTrain, yTrain, degree, lambda)
 
-            // Compute validation error
             val validationError = leastSquaredError(xValidation, yValidation, coefficients)
             errors.add(validationError)
         }
 
-        // Return average validation error
         return errors.average()
     }
 

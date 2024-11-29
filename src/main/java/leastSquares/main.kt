@@ -7,7 +7,9 @@ import org.jetbrains.kotlinx.kandy.letsplot.export.save
 import org.jetbrains.kotlinx.kandy.letsplot.feature.layout
 import org.jetbrains.kotlinx.kandy.letsplot.layers.line
 import org.jetbrains.kotlinx.kandy.letsplot.layers.points
+import kotlin.math.PI
 import kotlin.math.pow
+import kotlin.random.Random
 
 val generator = TrainGenerator()
 val solver = RegularizedSolver()
@@ -36,9 +38,11 @@ fun main() {
         "x" to x,
         "y" to y
     )
-/*
-    for (M in 1..15) {
-        val coeffs = solver.solve(train, M)
+
+    val unx = List(1000) { Random.nextDouble(0.0, 6.0)}
+
+    for (M in 1..30) {
+        val coeffs = solver.solve(train, M, 0.2)
 
         df.plot {
             points {
@@ -46,12 +50,12 @@ fun main() {
                 y(y)
             }
             line {
-                x(x)
-                y(predictY(x, coeffs))
+                x(unx)
+                y(predictY(unx, coeffs))
             }
         }.save("${function.toString()}${noise.toString()}$M.png")
     }
-*/
+
 
     val lambdas = listOf(0.8, 0.6, 0.4, 0.2, 0.0)
     var minError = 999999.0
@@ -77,8 +81,8 @@ fun main() {
             y(y)
         }
         line {
-            x(x)
-            y(predictY(x, coeffs))
+            x(unx)
+            y(predictY(unx, coeffs))
         }
         layout {
             caption = "On $function function and $noise noise the best M is $bestM, best Lambda is $bestLambda."
